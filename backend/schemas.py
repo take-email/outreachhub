@@ -15,6 +15,7 @@ class ToolBase(BaseModel):
     tool_name: str
     tool_description: Optional[str] = None
     website_url: Optional[str] = None
+    source_url: Optional[str] = None
 
 class ToolCreate(ToolBase):
     pass
@@ -23,6 +24,7 @@ class ToolUpdate(BaseModel):
     tool_name: Optional[str] = None
     tool_description: Optional[str] = None
     website_url: Optional[str] = None
+    source_url: Optional[str] = None
 
 class ToolResponse(ToolBase):
     model_config = ConfigDict(from_attributes=True)
@@ -94,6 +96,7 @@ class OutreachRecordBase(BaseModel):
     fb_profile_id: str
     template_id: Optional[str] = None
     generated_message: Optional[str] = None
+    note: Optional[str] = None
     status: OutreachStatusEnum = OutreachStatusEnum.MESSAGE_GENERATED
 
 class OutreachRecordCreate(BaseModel):
@@ -103,6 +106,7 @@ class OutreachRecordCreate(BaseModel):
 class OutreachRecordUpdate(BaseModel):
     status: Optional[OutreachStatusEnum] = None
     generated_message: Optional[str] = None
+    note: Optional[str] = None
 
 class OutreachRecordResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -112,6 +116,7 @@ class OutreachRecordResponse(BaseModel):
     fb_profile_id: str
     template_id: Optional[str] = None
     generated_message: Optional[str] = None
+    note: Optional[str] = None
     status: OutreachStatusEnum
     created_at: datetime
     updated_at: datetime

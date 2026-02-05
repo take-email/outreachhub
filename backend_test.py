@@ -314,7 +314,7 @@ class FounderOutreachAPITester:
                 return False
 
         # Filter by status
-        params = {'status': 'REPLIED'}
+        params = {'status': 'replied'}
         success, _ = self.run_test("Filter Outreach by Status", "GET", "/outreach", 200, params=params)
         if not success:
             return False

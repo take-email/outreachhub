@@ -1,53 +1,150 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { BrowserRouter, Routes, Route, NavLink, useLocation } from "react-router-dom";
+import { Toaster } from "./components/ui/sonner";
+import { 
+  LayoutDashboard, 
+  Wrench, 
+  Users, 
+  Facebook, 
+  FileText,
+  Menu,
+  X
+} from "lucide-react";
+import { useState } from "react";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+import Dashboard from "./pages/Dashboard";
+import Tools from "./pages/Tools";
+import Founders from "./pages/Founders";
+import Profiles from "./pages/Profiles";
+import Templates from "./pages/Templates";
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+const navItems = [
+  { path: "/", icon: LayoutDashboard, label: "Dashboard" },
+  { path: "/tools", icon: Wrench, label: "Tools" },
+  { path: "/founders", icon: Users, label: "Founders" },
+  { path: "/profiles", icon: Facebook, label: "FB Profiles" },
+  { path: "/templates", icon: FileText, label: "Templates" },
+];
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+const Sidebar = ({ isOpen, onClose }) => {
+  const location = useLocation();
 
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          onClick={onClose}
+          data-testid="sidebar-overlay"
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside 
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50
+          w-64 bg-white border-r border-slate-200
+          transform transition-transform duration-200 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}
+        data-testid="sidebar"
+      >
+        <div className="flex flex-col h-full">
+          {/* Logo */}
+          <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200">
+            <h1 className="text-xl font-bold text-violet-700" data-testid="app-title">
+              FounderReach
+            </h1>
+            <button 
+              className="lg:hidden p-1 hover:bg-slate-100 rounded"
+              onClick={onClose}
+              data-testid="close-sidebar-btn"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          
+          {/* Navigation */}
+          <nav className="flex-1 p-4 space-y-1">
+            {navItems.map(({ path, icon: Icon, label }) => {
+              const isActive = location.pathname === path;
+              return (
+                <NavLink
+                  key={path}
+                  to={path}
+                  onClick={onClose}
+                  className={`
+                    flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                    transition-colors duration-150
+                    ${isActive 
+                      ? 'bg-violet-50 text-violet-700 border border-violet-200' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                    }
+                  `}
+                  data-testid={`nav-${label.toLowerCase().replace(' ', '-')}`}
+                >
+                  <Icon className="w-5 h-5" />
+                  {label}
+                </NavLink>
+              );
+            })}
+          </nav>
+          
+          {/* Footer */}
+          <div className="p-4 border-t border-slate-200">
+            <p className="text-xs text-slate-400 text-center">
+              Multi-Profile Outreach Manager
+            </p>
+          </div>
+        </div>
+      </aside>
+    </>
+  );
+};
+
+const Layout = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  return (
+    <div className="flex min-h-screen bg-slate-50">
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Mobile header */}
+        <header className="lg:hidden h-16 bg-white border-b border-slate-200 flex items-center px-4">
+          <button 
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 hover:bg-slate-100 rounded-lg"
+            data-testid="open-sidebar-btn"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <h1 className="ml-3 text-lg font-bold text-violet-700">FounderReach</h1>
+        </header>
+        
+        {/* Main content */}
+        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
+    <BrowserRouter>
+      <Layout>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/tools" element={<Tools />} />
+          <Route path="/founders" element={<Founders />} />
+          <Route path="/profiles" element={<Profiles />} />
+          <Route path="/templates" element={<Templates />} />
         </Routes>
-      </BrowserRouter>
-    </div>
+      </Layout>
+      <Toaster position="top-right" richColors />
+    </BrowserRouter>
   );
 }
 

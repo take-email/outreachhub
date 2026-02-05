@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Button } from "../components/ui/button";
+import { Textarea } from "../components/ui/textarea";
 import {
   Table,
   TableBody,
@@ -21,7 +22,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "../components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "../components/ui/dialog";
 import { toast } from "sonner";
 import {
   Users,
@@ -35,6 +44,8 @@ import {
   Filter,
   X,
   ExternalLink,
+  StickyNote,
+  Copy,
 } from "lucide-react";
 import { statsApi, outreachApi, toolsApi, foundersApi, profilesApi } from "../api";
 import { StatusBadge, statusOptions } from "../components/StatusBadge";
@@ -60,6 +71,98 @@ const StatCard = ({ title, value, icon: Icon, subtitle }) => (
   </Card>
 );
 
+const NoteDialog = ({ open, onOpenChange, record, onSave }) => {
+  const [note, setNote] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (record) {
+      setNote(record.note || "");
+    }
+  }, [record, open]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await outreachApi.update(record.id, { note });
+      toast.success("Note saved");
+      onSave();
+      onOpenChange(false);
+    } catch (error) {
+      toast.error("Failed to save note");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent data-testid="note-dialog">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <StickyNote className="w-5 h-5 text-violet-600" />
+            Note for {record?.founder?.founder_name}
+          </DialogTitle>
+        </DialogHeader>
+        <Textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          placeholder="Add a note about this outreach..."
+          rows={5}
+          className="resize-none"
+          data-testid="note-textarea"
+        />
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button 
+            onClick={handleSave} 
+            disabled={saving}
+            className="bg-violet-700 hover:bg-violet-800"
+            data-testid="save-note-btn"
+          >
+            {saving ? "Saving..." : "Save Note"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const MessageDialog = ({ open, onOpenChange, record }) => {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(record?.generated_message || "");
+    toast.success("Message copied!");
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-xl" data-testid="message-dialog">
+        <DialogHeader>
+          <DialogTitle>Generated Message</DialogTitle>
+        </DialogHeader>
+        <div className="bg-slate-50 rounded-lg p-4 font-mono text-sm whitespace-pre-wrap max-h-[300px] overflow-y-auto">
+          {record?.generated_message || "No message generated"}
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Close
+          </Button>
+          <Button 
+            onClick={handleCopy}
+            className="bg-violet-700 hover:bg-violet-800"
+            data-testid="copy-message-btn"
+          >
+            <Copy className="w-4 h-4 mr-2" />
+            Copy Message
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const Dashboard = () => {
   const [stats, setStats] = useState({
     total_founders: 0,
@@ -73,6 +176,8 @@ const Dashboard = () => {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showGenerator, setShowGenerator] = useState(false);
+  const [noteRecord, setNoteRecord] = useState(null);
+  const [messageRecord, setMessageRecord] = useState(null);
   
   // Filters
   const [filters, setFilters] = useState({
@@ -301,6 +406,7 @@ const Dashboard = () => {
                     <TableHead>Tool</TableHead>
                     <TableHead>FB Profile</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Note</TableHead>
                     <TableHead>Last Updated</TableHead>
                     <TableHead className="w-[100px]">Actions</TableHead>
                   </TableRow>
@@ -350,6 +456,26 @@ const Dashboard = () => {
                         </Select>
                       </TableCell>
                       <TableCell>
+                        {record.note ? (
+                          <button
+                            onClick={() => setNoteRecord(record)}
+                            className="text-xs text-slate-600 max-w-[150px] truncate block hover:text-violet-600"
+                            title={record.note}
+                            data-testid={`view-note-${record.id}`}
+                          >
+                            {record.note}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setNoteRecord(record)}
+                            className="text-xs text-slate-400 hover:text-violet-600"
+                            data-testid={`add-note-${record.id}`}
+                          >
+                            + Add note
+                          </button>
+                        )}
+                      </TableCell>
+                      <TableCell>
                         <span className="text-sm text-slate-500">
                           {format(new Date(record.updated_at), "MMM d, yyyy")}
                         </span>
@@ -362,6 +488,21 @@ const Dashboard = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => setMessageRecord(record)}
+                              data-testid={`view-message-${record.id}`}
+                            >
+                              <MessageCircle className="w-4 h-4 mr-2" />
+                              View Message
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => setNoteRecord(record)}
+                              data-testid={`edit-note-${record.id}`}
+                            >
+                              <StickyNote className="w-4 h-4 mr-2" />
+                              {record.note ? "Edit Note" : "Add Note"}
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
                             <DropdownMenuItem
                               onClick={() => handleDelete(record.id)}
                               className="text-red-600"
@@ -386,6 +527,19 @@ const Dashboard = () => {
         open={showGenerator}
         onOpenChange={setShowGenerator}
         onSuccess={loadData}
+      />
+
+      <NoteDialog
+        open={!!noteRecord}
+        onOpenChange={() => setNoteRecord(null)}
+        record={noteRecord}
+        onSave={loadData}
+      />
+
+      <MessageDialog
+        open={!!messageRecord}
+        onOpenChange={() => setMessageRecord(null)}
+        record={messageRecord}
       />
     </div>
   );

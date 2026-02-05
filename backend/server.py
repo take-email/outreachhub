@@ -82,6 +82,40 @@ async def delete_tool(tool_id: str, db: AsyncSession = Depends(get_db)):
     await db.commit()
     return {"message": "Tool deleted successfully"}
 
+
+# ============== COMBINED TOOL + FOUNDER ENDPOINT ==============
+@api_router.post("/tool-founder", response_model=ToolFounderResponse)
+async def create_tool_with_founder(data: ToolFounderCreate, db: AsyncSession = Depends(get_db)):
+    # Create Tool
+    db_tool = Tool(
+        tool_name=data.tool_name,
+        tool_description=data.tool_description,
+        website_url=data.website_url,
+        source_url=data.source_url
+    )
+    db.add(db_tool)
+    await db.commit()
+    await db.refresh(db_tool)
+    
+    # Create Founder linked to Tool
+    db_founder = Founder(
+        founder_name=data.founder_name,
+        social_profile_url=data.social_profile_url,
+        tool_id=db_tool.id
+    )
+    db.add(db_founder)
+    await db.commit()
+    await db.refresh(db_founder)
+    
+    # Reload founder with tool relationship
+    result = await db.execute(
+        select(Founder).options(selectinload(Founder.tool)).where(Founder.id == db_founder.id)
+    )
+    founder_with_tool = result.scalar_one()
+    
+    return ToolFounderResponse(tool=db_tool, founder=founder_with_tool)
+
+
 # ============== FOUNDERS ENDPOINTS ==============
 @api_router.get("/founders", response_model=List[FounderResponse])
 async def get_founders(

@@ -122,14 +122,14 @@ const FounderFormDialog = ({ open, onOpenChange, founder, tools, onSave }) => {
           <div className="space-y-2">
             <Label htmlFor="tool_id">Linked Tool</Label>
             <Select 
-              value={formData.tool_id} 
-              onValueChange={(v) => setFormData({ ...formData, tool_id: v })}
+              value={formData.tool_id || "none"} 
+              onValueChange={(v) => setFormData({ ...formData, tool_id: v === "none" ? "" : v })}
             >
               <SelectTrigger id="tool_id" data-testid="founder-tool-select">
                 <SelectValue placeholder="Select a tool" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">No tool</SelectItem>
+                <SelectItem value="none">No tool</SelectItem>
                 {tools.map((tool) => (
                   <SelectItem key={tool.id} value={tool.id}>
                     {tool.tool_name}

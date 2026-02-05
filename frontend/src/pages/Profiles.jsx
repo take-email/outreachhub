@@ -110,14 +110,14 @@ const ProfileFormDialog = ({ open, onOpenChange, profile, templates, onSave }) =
           <div className="space-y-2">
             <Label htmlFor="template_id">Default Template</Label>
             <Select 
-              value={formData.template_id} 
-              onValueChange={(v) => setFormData({ ...formData, template_id: v })}
+              value={formData.template_id || "none"} 
+              onValueChange={(v) => setFormData({ ...formData, template_id: v === "none" ? "" : v })}
             >
               <SelectTrigger id="template_id" data-testid="profile-template-select">
                 <SelectValue placeholder="Select a template" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">No template</SelectItem>
+                <SelectItem value="none">No template</SelectItem>
                 {templates.map((template) => (
                   <SelectItem key={template.id} value={template.id}>
                     {template.template_name}

@@ -89,6 +89,21 @@ class TemplateResponse(TemplateBase):
     created_at: datetime
     updated_at: datetime
 
+
+# Combined Tool + Founder Creation
+class ToolFounderCreate(BaseModel):
+    tool_name: str
+    tool_description: Optional[str] = None
+    website_url: Optional[str] = None
+    source_url: Optional[str] = None
+    founder_name: str
+    social_profile_url: Optional[str] = None
+
+class ToolFounderResponse(BaseModel):
+    tool: ToolResponse
+    founder: FounderResponse
+
+
 # Outreach Record Schemas
 class OutreachRecordBase(BaseModel):
     founder_id: str

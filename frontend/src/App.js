@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, NavLink, useLocation } from "react-router-dom";
 import { Toaster } from "./components/ui/sonner";
+import { PinProtection } from "./components/PinProtection";
 import { 
   LayoutDashboard, 
-  Wrench, 
   Users, 
   Facebook, 
   FileText,
@@ -12,15 +12,13 @@ import {
 import { useState } from "react";
 
 import Dashboard from "./pages/Dashboard";
-import Tools from "./pages/Tools";
-import Founders from "./pages/Founders";
+import ToolsFounders from "./pages/ToolsFounders";
 import Profiles from "./pages/Profiles";
 import Templates from "./pages/Templates";
 
 const navItems = [
   { path: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { path: "/tools", icon: Wrench, label: "Tools" },
-  { path: "/founders", icon: Users, label: "Founders" },
+  { path: "/tools-founders", icon: Users, label: "Tools & Founders" },
   { path: "/profiles", icon: Facebook, label: "FB Profiles" },
   { path: "/templates", icon: FileText, label: "Templates" },
 ];
@@ -81,7 +79,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                     }
                   `}
-                  data-testid={`nav-${label.toLowerCase().replace(' ', '-')}`}
+                  data-testid={`nav-${label.toLowerCase().replace(/\s+/g, '-')}`}
                 >
                   <Icon className="w-5 h-5" />
                   {label}
@@ -133,18 +131,19 @@ const Layout = ({ children }) => {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/tools" element={<Tools />} />
-          <Route path="/founders" element={<Founders />} />
-          <Route path="/profiles" element={<Profiles />} />
-          <Route path="/templates" element={<Templates />} />
-        </Routes>
-      </Layout>
-      <Toaster position="top-right" richColors />
-    </BrowserRouter>
+    <PinProtection>
+      <BrowserRouter>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/tools-founders" element={<ToolsFounders />} />
+            <Route path="/profiles" element={<Profiles />} />
+            <Route path="/templates" element={<Templates />} />
+          </Routes>
+        </Layout>
+        <Toaster position="top-right" richColors />
+      </BrowserRouter>
+    </PinProtection>
   );
 }
 

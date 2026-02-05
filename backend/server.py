@@ -18,7 +18,8 @@ from schemas import (
     FacebookProfileCreate, FacebookProfileUpdate, FacebookProfileResponse,
     TemplateCreate, TemplateUpdate, TemplateResponse,
     OutreachRecordCreate, OutreachRecordUpdate, OutreachRecordResponse,
-    GenerateMessageRequest, DashboardStats, OutreachStatusEnum
+    GenerateMessageRequest, DashboardStats, OutreachStatusEnum,
+    ToolFounderCreate, ToolFounderResponse
 )
 
 ROOT_DIR = Path(__file__).parent

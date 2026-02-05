@@ -3,7 +3,7 @@ import sys
 from logging.config import fileConfig
 from pathlib import Path
 
-from sqlalchemy import engine_from_config
+from sqlalchemy import engine_from_config, create_engine
 from sqlalchemy import pool
 
 from alembic import context
@@ -17,10 +17,6 @@ load_dotenv(Path(__file__).parent.parent / '.env')
 # this is the Alembic Config object
 config = context.config
 
-# Set the database URL from environment (sync version, not async)
-database_url = os.environ.get('DATABASE_URL')
-config.set_main_option('sqlalchemy.url', database_url)
-
 # Interpret the config file for Python logging
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
@@ -29,11 +25,13 @@ if config.config_file_name is not None:
 from models import Base
 target_metadata = Base.metadata
 
+# Get the database URL from environment
+database_url = os.environ.get('DATABASE_URL')
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
-    url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url,
+        url=database_url,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -44,11 +42,7 @@ def run_migrations_offline() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    connectable = create_engine(database_url, poolclass=pool.NullPool)
 
     with connectable.connect() as connection:
         context.configure(

@@ -19,6 +19,11 @@ export const toolsApi = {
   delete: (id) => api.delete(`/tools/${id}`),
 };
 
+// Combined Tool + Founder API
+export const toolFounderApi = {
+  create: (data) => api.post('/tool-founder', data),
+};
+
 // Founders API
 export const foundersApi = {
   getAll: (toolId) => api.get('/founders', { params: { tool_id: toolId } }),

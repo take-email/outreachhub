@@ -211,13 +211,13 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Select 
               value={filters.tool_id} 
-              onValueChange={(v) => setFilters(f => ({ ...f, tool_id: v }))}
+              onValueChange={(v) => setFilters(f => ({ ...f, tool_id: v === "all" ? "" : v }))}
             >
               <SelectTrigger data-testid="filter-tool">
                 <SelectValue placeholder="All Tools" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Tools</SelectItem>
+                <SelectItem value="all">All Tools</SelectItem>
                 {tools.map(tool => (
                   <SelectItem key={tool.id} value={tool.id}>{tool.tool_name}</SelectItem>
                 ))}
@@ -226,13 +226,13 @@ const Dashboard = () => {
 
             <Select 
               value={filters.founder_id} 
-              onValueChange={(v) => setFilters(f => ({ ...f, founder_id: v }))}
+              onValueChange={(v) => setFilters(f => ({ ...f, founder_id: v === "all" ? "" : v }))}
             >
               <SelectTrigger data-testid="filter-founder">
                 <SelectValue placeholder="All Founders" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Founders</SelectItem>
+                <SelectItem value="all">All Founders</SelectItem>
                 {founders.map(founder => (
                   <SelectItem key={founder.id} value={founder.id}>{founder.founder_name}</SelectItem>
                 ))}
@@ -241,13 +241,13 @@ const Dashboard = () => {
 
             <Select 
               value={filters.fb_profile_id} 
-              onValueChange={(v) => setFilters(f => ({ ...f, fb_profile_id: v }))}
+              onValueChange={(v) => setFilters(f => ({ ...f, fb_profile_id: v === "all" ? "" : v }))}
             >
               <SelectTrigger data-testid="filter-profile">
                 <SelectValue placeholder="All Profiles" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Profiles</SelectItem>
+                <SelectItem value="all">All Profiles</SelectItem>
                 {profiles.map(profile => (
                   <SelectItem key={profile.id} value={profile.id}>{profile.profile_name}</SelectItem>
                 ))}
@@ -256,13 +256,13 @@ const Dashboard = () => {
 
             <Select 
               value={filters.status} 
-              onValueChange={(v) => setFilters(f => ({ ...f, status: v }))}
+              onValueChange={(v) => setFilters(f => ({ ...f, status: v === "all" ? "" : v }))}
             >
               <SelectTrigger data-testid="filter-status">
                 <SelectValue placeholder="All Statuses" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
                 {statusOptions.map(opt => (
                   <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
                 ))}

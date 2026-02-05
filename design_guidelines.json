@@ -1,0 +1,168 @@
+{
+  "design_system": {
+    "identity": {
+      "name": "FounderReach",
+      "personality": "Organized, Efficient, Tactile, Minimalist",
+      "archetype": "Soft Utility (Clean functionality with human warmth)",
+      "theme_mode": "light",
+      "visual_principles": [
+        "Density with Breath: High data density in tables, but surrounded by generous whitespace.",
+        "Soft Borders: Use 1px borders in neutral grays instead of heavy shadows.",
+        "Status Visibility: Color-coded badges must be instantly recognizable.",
+        "Tactile Interactions: Subtle hover states that feel physical (border color shift)."
+      ]
+    },
+    "typography": {
+      "font_family": {
+        "headings": "Outfit, sans-serif",
+        "body": "Inter, sans-serif",
+        "mono": "JetBrains Mono, monospace"
+      },
+      "scale": {
+        "h1": "text-4xl font-bold tracking-tight",
+        "h2": "text-3xl font-semibold tracking-tight",
+        "h3": "text-2xl font-semibold",
+        "h4": "text-xl font-medium",
+        "body_lg": "text-lg leading-relaxed",
+        "body_base": "text-base leading-relaxed text-slate-600",
+        "body_sm": "text-sm leading-normal text-slate-500",
+        "caption": "text-xs font-medium uppercase tracking-wider text-slate-400"
+      }
+    },
+    "colors": {
+      "palette": {
+        "primary": {
+          "main": "#6D28D9",
+          "hover": "#5B21B6",
+          "light": "#DDD6FE",
+          "foreground": "#FFFFFF"
+        },
+        "background": {
+          "main": "#FAFAFA",
+          "paper": "#FFFFFF",
+          "sidebar": "#FFFFFF"
+        },
+        "text": {
+          "primary": "#18181B",
+          "secondary": "#52525B",
+          "muted": "#A1A1AA"
+        },
+        "border": {
+          "default": "#E4E4E7",
+          "active": "#A1A1AA"
+        },
+        "status": {
+          "generated": { "bg": "#EFF6FF", "text": "#1D4ED8", "label": "Generated" },
+          "sent": { "bg": "#FAF5FF", "text": "#7E22CE", "label": "Sent" },
+          "replied": { "bg": "#F0FDF4", "text": "#15803D", "label": "Replied" },
+          "closed": { "bg": "#F4F4F5", "text": "#52525B", "label": "Closed" },
+          "giveaway": { "bg": "#FFF7ED", "text": "#C2410C", "label": "Giveaway" }
+        }
+      }
+    },
+    "spacing": {
+      "container_padding": "p-6 md:p-8 lg:p-12",
+      "section_gap": "gap-8",
+      "component_gap": "gap-4",
+      "border_radius": {
+        "sm": "rounded-sm",
+        "md": "rounded-md",
+        "lg": "rounded-lg",
+        "xl": "rounded-xl"
+      }
+    }
+  },
+  "layout_strategies": {
+    "dashboard_grid": {
+      "type": "Bento Grid (Mode B - High Density)",
+      "structure": "Sidebar (fixed 250px) + Main Content (flex-1)",
+      "grid_cols": "grid-cols-1 md:grid-cols-12",
+      "gap": "gap-6",
+      "widgets": {
+        "kpi_card": "col-span-12 md:col-span-4",
+        "main_table": "col-span-12",
+        "action_panel": "col-span-12 md:col-span-4"
+      }
+    },
+    "tables": {
+      "style": "Clean, row-hover effect, minimal vertical dividers",
+      "density": "Comfortable (p-4)",
+      "header_style": "bg-slate-50 text-xs uppercase tracking-wider font-semibold text-slate-500"
+    }
+  },
+  "component_guidelines": {
+    "cards": {
+      "style": "bg-white border border-slate-200 shadow-sm rounded-xl hover:border-slate-300 transition-colors duration-200",
+      "padding": "p-6"
+    },
+    "buttons": {
+      "primary": "bg-violet-700 hover:bg-violet-800 text-white shadow-sm rounded-md px-4 py-2 font-medium transition-all active:scale-95",
+      "secondary": "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm rounded-md px-4 py-2 font-medium",
+      "ghost": "text-slate-600 hover:bg-slate-100 hover:text-slate-900 rounded-md px-3 py-2",
+      "destructive": "bg-red-50 text-red-600 hover:bg-red-100 border border-red-100"
+    },
+    "badges": {
+      "style": "rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ring-opacity-10"
+    },
+    "forms": {
+      "input_style": "h-10 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+      "label_style": "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block"
+    },
+    "modals": {
+      "overlay": "bg-black/20 backdrop-blur-sm",
+      "content": "bg-white border border-slate-200 shadow-xl sm:rounded-lg max-w-lg"
+    }
+  },
+  "assets": {
+    "icons": {
+      "library": "lucide-react",
+      "style": "Stroke width 1.5px or 2px, Size 16-20px for UI, 24px for Nav"
+    },
+    "images": {
+      "founders": [
+        "https://images.unsplash.com/photo-1689600944138-da3b150d9cb8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdCUyMHBvcnRyYWl0fGVufDB8fHx8MTc3MDMxNTEyM3ww&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1576558656222-ba66febe3dec?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdCUyMHBvcnRyYWl0fGVufDB8fHx8MTc3MDMxNTEyM3ww&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/30004324/pexels-photo-30004324.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "https://images.pexels.com/photos/30004323/pexels-photo-30004323.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      ],
+      "placeholders": {
+        "tool_logo": "Use a colored square container with the first letter of the tool name if no logo exists."
+      }
+    }
+  },
+  "implementation_instructions": {
+    "dashboard_page": {
+      "path": "/app/frontend/src/pages/Dashboard.js",
+      "guidance": "Implement a high-density table for Outreach Records. Top section should have 3 key cards: 'Total Founders', 'Messages Sent', 'Reply Rate'. Use the 'Status' colors defined in palette. Add a 'New Outreach' button prominently."
+    },
+    "tools_management": {
+      "path": "/app/frontend/src/pages/Tools.js",
+      "guidance": "Grid of cards. Each card shows Tool Name, Description, and an 'Edit/Delete' action. Add a 'Add Tool' button top right."
+    },
+    "founders_management": {
+      "path": "/app/frontend/src/pages/Founders.js",
+      "guidance": "List view or Table view. Show Avatar, Name, Linked Tool, and Social URL. Include 'Import CSV' button if possible (UI only)."
+    },
+    "profiles_management": {
+      "path": "/app/frontend/src/pages/Profiles.js",
+      "guidance": "List of the 20 Facebook profiles. Show Profile Name, Status (Active/Restricted), and Last Used Date."
+    },
+    "message_generation": {
+      "component": "MessageGeneratorModal",
+      "guidance": "A specialized modal. Left side: Select Template, Select Founder. Right side: Preview of the generated message with placeholders filled. Highlighting the replaced variables is a nice touch."
+    }
+  },
+  "universal_guidelines": {
+    "general": [
+      "Use 'sonner' for all toast notifications.",
+      "Ensure all interactive elements have hover states.",
+      "Do NOT use gradients for backgrounds, stick to solid colors or very subtle mesh if absolutely necessary.",
+      "Use 'lucide-react' for icons.",
+      "Add 'data-testid' to all buttons and inputs."
+    ],
+    "accessibility": [
+      "Ensure text contrast ratio of 4.5:1.",
+      "Focus rings must be visible."
+    ]
+  }
+}

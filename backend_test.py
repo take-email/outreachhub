@@ -276,16 +276,16 @@ class FounderOutreachAPITester:
 
         outreach_id = self.created_resources['outreach'][0]
         
-        # Update status to MESSAGE_SENT
-        update_data = {"status": "MESSAGE_SENT"}
-        success, updated_record = self.run_test("Update Status to MESSAGE_SENT", "PUT", f"/outreach/{outreach_id}", 200, update_data)
-        if not success or updated_record.get('status') != 'MESSAGE_SENT':
+        # Update status to message_sent
+        update_data = {"status": "message_sent"}
+        success, updated_record = self.run_test("Update Status to message_sent", "PUT", f"/outreach/{outreach_id}", 200, update_data)
+        if not success or updated_record.get('status') != 'message_sent':
             return False
 
-        # Update status to REPLIED
-        update_data = {"status": "REPLIED"}
-        success, updated_record = self.run_test("Update Status to REPLIED", "PUT", f"/outreach/{outreach_id}", 200, update_data)
-        if not success or updated_record.get('status') != 'REPLIED':
+        # Update status to replied
+        update_data = {"status": "replied"}
+        success, updated_record = self.run_test("Update Status to replied", "PUT", f"/outreach/{outreach_id}", 200, update_data)
+        if not success or updated_record.get('status') != 'replied':
             return False
 
         return True

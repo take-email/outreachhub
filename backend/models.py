@@ -22,6 +22,7 @@ class Tool(Base):
     tool_name = Column(String(255), nullable=False, index=True)
     tool_description = Column(Text, nullable=True)
     website_url = Column(String(500), nullable=True)
+    source_url = Column(String(500), nullable=True)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
@@ -74,6 +75,7 @@ class OutreachRecord(Base):
     fb_profile_id = Column(String(36), ForeignKey('facebook_profiles.id', ondelete='CASCADE'), nullable=False, index=True)
     template_id = Column(String(36), ForeignKey('templates.id', ondelete='SET NULL'), nullable=True, index=True)
     generated_message = Column(Text, nullable=True)
+    note = Column(Text, nullable=True)
     status = Column(SQLEnum(OutreachStatus), default=OutreachStatus.MESSAGE_GENERATED, index=True)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
